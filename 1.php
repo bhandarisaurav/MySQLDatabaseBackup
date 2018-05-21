@@ -75,7 +75,6 @@ $result = mysqli_query($con, $sql);
     <?php include 'db_functions.php';
 
     if (isset($_GET['db'])) {
-        if ($_GET['db'] == "drop")
             drop_db($_GET['db']);
     }
     $i = 0;
@@ -103,7 +102,7 @@ $result = mysqli_query($con, $sql);
                   </a>
                   &nbsp;
                   <a onclick=\"return confirm('Are you sure you want to delete this Database?');\" 
-                  href='1.php?action=delete&db={$row['Database Name']}'>
+                  href='1.php?db={$row['Database Name']}'>
                         <i class='fa fa-trash-alt fa-warning'></i>
                   </a>
               </td>

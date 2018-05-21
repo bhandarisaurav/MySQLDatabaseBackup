@@ -1,10 +1,8 @@
 <?php
-$con = mysqli_connect('localhost', 'root', '');
 function drop_db($dbname)
 {
-    global $con;
+    $con = mysqli_connect('localhost', 'root', '');
     $sql = 'DROP DATABASE ' . $dbname;
-    echo $sql;
     $result = mysqli_query($con, $sql);
     if (!$result) {
 
