@@ -20,19 +20,4 @@ function drop_db($dbname)
     }
     mysqli_close($con);
 }
-
-function export_db($dbname)
-{
-   $dbhost = 'localhost';
-   $dbuser = 'root';
-   $dbpass = '';
-
-   $backup_file = $dbname . date("Y-m-d-H-i-s") . '.gz';
-
-   $command = "mysqldump --opt -h $dbhost -u $dbuser -p $dbpass ". $dbname." | gzip > $backup_file";
-    echo $command;
-   system($command);
-}
-
-
 ?>

@@ -65,7 +65,7 @@ $result = mysqli_query($con, $sql);
         <th>ID</th>
         <th>Database Name</th>
         <th>Table Count</th>
-        <th>Database Size in KB</th>
+        <th>Database Size</th>
         <th>Date Created</th>
         <th>Date Updated</th>
         <th>Action</th>
@@ -75,8 +75,8 @@ $result = mysqli_query($con, $sql);
     <?php include 'db_functions.php';
 
     if (isset($_GET['db'])) {
-        if ($_GET['db']== "")
-        drop_db($_GET['db']);
+        if ($_GET['db'] == "drop")
+            drop_db($_GET['db']);
     }
     $i = 0;
 
@@ -98,7 +98,7 @@ $result = mysqli_query($con, $sql);
               <td style='text-align: center;'>$date_created</td>
               <td style='text-align: center;'>$date_updated</td>
               <td style='font-size:1.1em;'>
-                  <a href='1.php?action=download&db={$row['Database Name']}'>
+                  <a href='db_export.php?db={$row['Database Name']}'>
                         <i class='fas fa-cloud-download-alt'></i>
                   </a>
                   &nbsp;
