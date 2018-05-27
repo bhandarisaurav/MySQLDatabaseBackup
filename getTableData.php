@@ -34,14 +34,15 @@
             color: inherit;
             text-decoration: none;
         }
-        a:hover
-        {
-            color:#00A0C6;
-            text-decoration:none;
+
+        a:hover {
+            color: #00A0C6;
+            text-decoration: none;
             /*cursor:pointer;*/
             cursor: progress;
         }
-        a:active{
+
+        a:active {
             color: green;
         }
     </style>
@@ -50,22 +51,27 @@
 <body>
 
 <?php include 'db_connect.php';
-
-$sql = "SELECT table_schema as 'Database Name', count(1) as 'Table Count',round(sum( data_length + index_length ) / 1024 ,1) as 'Database Size in KB',
-    MAX(create_time) as 'Date Created', MAX(update_time) as 'Date Updated' FROM 
-    information_schema.TABLES WHERE table_schema NOT IN ('information_schema','mysql','performance_schema','phpmyadmin') 
-    GROUP BY table_schema  order by sum( data_length + index_length ) / 1024 desc;";
-
-$result = mysqli_query($con, $sql);
+if (isset($_GET["db"])) {
+    $db = $_GET["db"];
+    $sql = "SELECT table_name AS 'Table Name',table_rows AS 'Row Count', ROUND( (data_length + index_length) /1024, 2 ) AS 'Table Size in KB',
+                create_time as 'Date Created', UPDATE_TIME as 'Date Updated'
+                FROM information_schema.TABLES WHERE information_schema.TABLES.table_schema = '$db';";
+    $result = mysqli_query($con, $sql);
+} else {
+    echo "<SCRIPT type='text/javascript'>
+        alert('Database Not Found');
+        window.location.replace('getTableData.php');
+</SCRIPT>";
+}
 ?>
 
 <h1 style='text-align: center;'>Database Details</h1>
 <table class="rwd-table">
     <tr>
         <th>ID</th>
-        <th>Database Name</th>
-        <th>Table Count</th>
-        <th>Database Size</th>
+        <th>Table Name</th>
+        <th>Row Count</th>
+        <th>Table Size</th>
         <th>Date Created</th>
         <th>Date Updated</th>
         <th>Action</th>
@@ -74,8 +80,8 @@ $result = mysqli_query($con, $sql);
     <!--    Getting Data from Database-->
     <?php include 'db_functions.php';
 
-    if (isset($_GET['db'])) {
-            drop_db($_GET['db']);
+    if (isset($_GET['table'])) {
+        drop_table($_GET['table']);
     }
     $i = 0;
 
@@ -91,18 +97,18 @@ $result = mysqli_query($con, $sql);
         echo
         "<tr>
               <td style='width:1%'>$i</td>
-              <td>{$row['Database Name']}</td>
-              <td style='text-align: center;'>{$row['Table Count']}</td>
-              <td style='text-align: center;'>{$row['Database Size in KB']} KB</td>
+              <td>{$row['Table Name']}</td>
+              <td style='text-align: center;'>{$row['Row Count']}</td>
+              <td style='text-align: center;'>{$row['Table Size in KB']} KB</td>
               <td style='text-align: center;'>$date_created</td>
               <td style='text-align: center;'>$date_updated</td>
               <td style='font-size:1.1em;'>
-                  <a href='db_export.php?db={$row['Database Name']}'>
+                  <a href='db_export.php?db=$db&table={$row['Table Name']}'>
                         <i class='fas fa-cloud-download-alt'></i>
                   </a>
                   &nbsp;
-                  <a onclick=\"return confirm('Are you sure you want to delete this Database?');\" 
-                  href='1.php?db={$row['Database Name']}'>
+                  <a onclick=\"return confirm('Are you sure you want to delete this Table?');\" 
+                  href='getDBData.php?table={$row['Table Name']}'>
                         <i class='fa fa-trash-alt fa-warning'></i>
                   </a>
               </td>

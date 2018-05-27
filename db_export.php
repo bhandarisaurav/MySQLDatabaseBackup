@@ -10,8 +10,12 @@ if (isset($_GET['db'])) {
     $dbpass = '';
 
 //    $backup_file = $dbname . date("Y-m-d-H-i-s") . '.sql';
-
-    $command = "mysqldump --opt -h $dbhost -u $dbuser $dbpass " . $dbname . " > $backup_file";
+    if (isset($_GET['table'])) {
+        $table = $_GET['table'];
+        $command = "mysqldump --opt -h $dbhost -u $dbuser $dbpass " . $dbname . $table . " > $backup_file";
+        echo $command;
+    } else
+        $command = "mysqldump --opt -h $dbhost -u $dbuser $dbpass " . $dbname . " > $backup_file";
 //    echo $command;
     system($command);
 
@@ -19,9 +23,10 @@ if (isset($_GET['db'])) {
 //to drop all the backup files after the export is complete
 //    echo file_get_contents($backup_file);
 //    array_map('unlink', glob("backup/*.*"));
+//    rmdir("backup");
 
 
-    rmdir("backup");
+
     if (!is_dir('backup')) {
         mkdir('backup', 0777, true);
     }
@@ -29,7 +34,7 @@ if (isset($_GET['db'])) {
 } else {
     echo "<SCRIPT type='text/javascript'>
         alert('Cannot Export Database');
-        window.location.replace('1.php');
+        window.location.replace('getDBData.php');
         </SCRIPT>";
 }
 

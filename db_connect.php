@@ -21,7 +21,7 @@ if (mysqli_connect_errno()) {
     echo "<SCRIPT type='text/javascript'>
     if ($var===0){
         alert('MySql Connection Successful');
-        window.location.replace('1.php');
+        window.location.replace('getDBData.php');
     }
 </SCRIPT>";
 }
