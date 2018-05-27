@@ -14,7 +14,14 @@ if (isset($_GET['db'])) {
     $command = "mysqldump --opt -h $dbhost -u $dbuser $dbpass " . $dbname . " > $backup_file";
 //    echo $command;
     system($command);
-    echo file_get_contents($backup_file);
+
+
+//to drop all the backup files after the export is complete
+//    echo file_get_contents($backup_file);
+//    array_map('unlink', glob("backup/*.*"));
+
+
+    rmdir("backup");
     if (!is_dir('backup')) {
         mkdir('backup', 0777, true);
     }
