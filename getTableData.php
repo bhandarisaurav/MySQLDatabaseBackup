@@ -60,12 +60,12 @@ if (isset($_GET["db"])) {
 } else {
     echo "<SCRIPT type='text/javascript'>
         alert('Database Not Found');
-        window.location.replace('getTableData.php');
+        window.location.replace('getDBData.php');
 </SCRIPT>";
 }
 ?>
 
-<h1 style='text-align: center;'>Database Details</h1>
+<h1 style='text-align: center;'>Table Details of Database : <?php echo($_GET['db']) ?></h1>
 <table class="rwd-table">
     <tr>
         <th>ID</th>
@@ -81,7 +81,7 @@ if (isset($_GET["db"])) {
     <?php include 'db_functions.php';
 
     if (isset($_GET['table'])) {
-        drop_table($_GET['table']);
+        drop_table($_GET['table'], $_GET['db']);
     }
     $i = 0;
 
@@ -108,7 +108,7 @@ if (isset($_GET["db"])) {
                   </a>
                   &nbsp;
                   <a onclick=\"return confirm('Are you sure you want to delete this Table?');\" 
-                  href='getDBData.php?table={$row['Table Name']}'>
+                  href='getTableData.php?db=$db&table={$row['Table Name']}'>
                         <i class='fa fa-trash-alt fa-warning'></i>
                   </a>
               </td>
