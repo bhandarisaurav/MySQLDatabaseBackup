@@ -32,8 +32,8 @@ function drop_table($table_name, $db)
         window.location.replace("' . $location . '");
         </SCRIPT>';
     } else {
-        $error = "Table " . $table_name . " Deleted Successfully";
-        echo '<SCRIPT type="text/javascript">alert("' . $error . '")
+        $success = "Table " . $table_name . " Deleted Successfully";
+        echo '<SCRIPT type="text/javascript">alert("' . $success . '")
         window.location.replace("' . $location . '");
         </SCRIPT>';
     }
