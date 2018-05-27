@@ -65,7 +65,8 @@ if (isset($_GET["db"])) {
 }
 ?>
 
-<h1 style='text-align: center;'>Table Details of Database : <?php echo($_GET['db']) ?></h1>
+<h1 style='text-align: center;'>Table Details of <b><a href="getDBData.php">Database</a></b>
+    : <?php echo($_GET['db']) ?></h1>
 <table class="rwd-table">
     <tr>
         <th>ID</th>
@@ -80,7 +81,7 @@ if (isset($_GET["db"])) {
     <!--    Getting Data from Database-->
     <?php include 'db_functions.php';
 
-    if (isset($_GET['table'])) {
+    if (isset($_GET['action'])) {
         drop_table($_GET['table'], $_GET['db']);
     }
     $i = 0;
@@ -97,7 +98,7 @@ if (isset($_GET["db"])) {
         echo
         "<tr>
               <td style='width:1%'>$i</td>
-              <td>{$row['Table Name']}</td>
+              <td><a href='getRowData.php?db=$db&table={$row['Table Name']}'>{$row['Table Name']}</a</td>
               <td style='text-align: center;'>{$row['Row Count']}</td>
               <td style='text-align: center;'>{$row['Table Size in KB']} KB</td>
               <td style='text-align: center;'>$date_created</td>
@@ -108,7 +109,7 @@ if (isset($_GET["db"])) {
                   </a>
                   &nbsp;
                   <a onclick=\"return confirm('Are you sure you want to delete this Table?');\" 
-                  href='getTableData.php?db=$db&table={$row['Table Name']}'>
+                  href='getTableData.php?action=delete&db=$db&table={$row['Table Name']}'>
                         <i class='fa fa-trash-alt fa-warning'></i>
                   </a>
               </td>
