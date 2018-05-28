@@ -57,6 +57,7 @@ if (isset($_GET["db"]) && isset($_GET["table"])) {
     $con = mysqli_connect("localhost", "root", "", $db);
     $fields = array();
     $res = mysqli_query($con, "SHOW COLUMNS FROM " . $table);
+//    echo "SHOW COLUMNS FROM " . $table;
     if (!$res) {
         $location = "getTableData.php?db=" . $db;
         $error = mysqli_error($con);
@@ -66,9 +67,9 @@ if (isset($_GET["db"]) && isset($_GET["table"])) {
     }
     while ($x = mysqli_fetch_assoc($res)) {
         $val = $x['Field'];
-        if (strtolower($val) == "id")
-            $val = "ID";
-        $fields[] = ucfirst($val);
+//        if (strtolower($val) == "id")
+//            $val = "ID";
+        $fields[] = $val;
 
     }
 } else {
@@ -78,9 +79,8 @@ if (isset($_GET["db"]) && isset($_GET["table"])) {
 </SCRIPT>";
 }
 //foreach ($fields as $f) { echo "<br>Field name: ".$f; }
-$sql = "SELECT table_name AS 'Table Name',table_rows AS 'Row Count', ROUND( (data_length + index_length) /1024, 2 ) AS 'Table Size in KB',
-                create_time as 'Date Created', UPDATE_TIME as 'Date Updated'
-                FROM information_schema.TABLES WHERE information_schema.TABLES.table_schema = '$db';";
+$sql = "SELECT * from " . $table;
+//echo $sql;
 $result = mysqli_query($con, $sql);
 if (!$result) {
     $location = "getTableData.php?db=" . $db;
@@ -91,8 +91,8 @@ if (!$result) {
 }
 ?>
 
-<h1 style='text-align: center;'>Table Details of <b><a href="getDBData.php">Database</a></b>
-    : <?php echo($_GET['db']) ?></h1>
+<h1 style='text-align: center;'>Row Details of <b><a href="getTableData.php?db=<?php echo($_GET['db']) ?>">Table</a></b>
+    : <?php echo($_GET['table']) ?></h1>
 <table class="rwd-table">
     <tr>
         <?php
@@ -106,7 +106,20 @@ if (!$result) {
     </tr>
 
     <!--    Getting Data from Database-->
-
+    <?php
+    while ($row = mysqli_fetch_array($result)) {
+        echo "<tr>";
+        $i = 0;
+        $count = sizeof($fields);
+        while ($count > 0) {
+            $val = $row[($fields[$i])];
+            echo "<td>$val</td>";
+            $i++;
+            $count--;
+        }
+        echo "</tr>";
+    }
+    ?>
     <!--    Getting Data from Database-->
 </table>
 
