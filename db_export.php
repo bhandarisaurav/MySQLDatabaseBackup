@@ -13,11 +13,11 @@ if (isset($_GET['db'])) {
     if (isset($_GET['table'])) {
         $table = $_GET['table'];
         $backup_file = $dbname . '_' . $table . '.sql';
-        header("Content-Disposition: attachment; filename='{$backup_file}'");
+        header("Content-Disposition: attachment; filename={$backup_file}");
         $command = "mysqldump --opt -h $dbhost -u $dbuser $dbpass " . $dbname . " " . $table . " > $backup_file";
     } else {
         $backup_file = $dbname . '.sql';
-        header("Content-Disposition: attachment; filename='{$backup_file}'");
+        header("Content-Disposition: attachment; filename={$backup_file}");
         $command = "mysqldump --opt -h $dbhost -u $dbuser $dbpass " . $dbname . " > $backup_file";
     }
 
